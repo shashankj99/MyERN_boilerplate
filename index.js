@@ -7,14 +7,18 @@
 
 // package import
 const express = require('express');
-const db = require('./model');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const db = require('./models');
 
 const app = express();
 
-db.sequelize.sync({force: true}).then(() => { console.log("Connected to DB") }).catch((err) => {console.log(err)});
+db.sequelize.sync().then(() => { console.log("Connected to DB") }).catch((err) => {console.log(err)});
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+require('./routes/user.routes')(app);
 
 app.listen(5000);
-
-app.get('/', (req, res) => {
-    res.send('Hello! world');
-});
