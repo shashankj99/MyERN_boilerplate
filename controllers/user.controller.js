@@ -8,6 +8,7 @@ const sequelize = db.sequelize;
 
 const SALT_ROUNDS = 10;
 
+
 // create and save a new user
 exports.create = async (req, res, next) => {
     try {
@@ -102,4 +103,15 @@ exports.login = async (req, res, next) => {
     } catch (error) {
         return next(error);
     }
+}
+
+exports.authenticate = (req, res)  => {
+    res.status(200).json({
+        id: req.user.id,
+        isAuth: true,
+        email: req.user.email,
+        firstName: req.user.first_name,
+        lastName: req.user.last_name,
+        role: req.user.role
+    });
 }
