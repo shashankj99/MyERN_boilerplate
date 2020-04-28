@@ -20,5 +20,10 @@ module.exports = app => {
         user.authenticate
     );
 
+    router.get('/logout',
+        auth,
+        user.logout
+    )
+
     app.use('/api/users', router);
 }

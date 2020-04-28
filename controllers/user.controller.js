@@ -42,12 +42,7 @@ exports.create = async (req, res, next) => {
 
             return next();
         } else {
-            const extractedErrors = [];
-            errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
-
-            return res.status(422).json({
-                errors: extractedErrors,
-            });
+            validationError(errors);
         }
     } catch (error) {
         return next(error);
@@ -93,18 +88,14 @@ exports.login = async (req, res, next) => {
                 });
             }
         } else {
-            const extractedErrors = [];
-            errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
-
-            return res.status(422).json({
-                errors: extractedErrors,
-            });
+            validationError(errors);
         }
     } catch (error) {
         return next(error);
     }
 }
 
+// send response on authenticating the user
 exports.authenticate = (req, res)  => {
     res.status(200).json({
         id: req.user.id,
@@ -113,5 +104,30 @@ exports.authenticate = (req, res)  => {
         firstName: req.user.first_name,
         lastName: req.user.last_name,
         role: req.user.role
+    });
+}
+
+// logout function
+exports.logout = async (req, res) => {
+    await User.findByPk(req.user.id)
+        .then((user) => {
+            user.token = null;
+            user.save();
+
+            return res.status(200).send({
+                success: true
+            });
+        }).catch((err) => {
+            return res.json({success: false, err})
+        });
+}
+
+// validation error function
+let validationError = (errors) => {
+    const extractedErrors = [];
+    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
+
+    return res.status(422).json({
+        errors: extractedErrors,
     });
 }
