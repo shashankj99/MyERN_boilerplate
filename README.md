@@ -4,7 +4,7 @@ This is a boilerplate in [React.js](https://reactjs.org/), [Node.js](https://nod
 
 In the project directory, run `npm install` to setup concurrently package.<br />
 
-[concurrently] - The concurrently package is used to run the server and client simultaneously.<br />
+[concurrently](https://www.npmjs.com/package/concurrently) - The concurrently package is used to run the server and client simultaneously.<br />
 
 Now, navigate to each server and client folder and run `npm install` consecutively.<br />
 
