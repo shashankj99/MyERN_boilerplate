@@ -12,9 +12,10 @@ exports.auth = (req, res, next) => {
                 next()
             })
             .catch((err) => {
-                res.status(422).json({
-                    message: err
-                })
+                res.json({
+                    isAuth: false,
+                    error: true
+                });
             });
     });
 }
